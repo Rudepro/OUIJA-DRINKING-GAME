@@ -1,16 +1,109 @@
-# React + Vite
+# Ouija — Drinking Game 🪄🥃
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+¡Bienvenido! Este repositorio contiene una versión de un juego de beber basado en cartas ("Ouija Drinking Game") implementado en **React** y empaquetado con **Vite**.
 
-Currently, two official plugins are available:
+## 🔎 Descripción
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Juego de cartas para beber donde puedes configurar el número de jugadores y barajas (54 cartas por baraja).
+- Reglas por carta, reparto aleatorio sin repeticiones y animación de extracción.
+- Interfaz modular: componentes React en `src/components` y lógica de juego en `src/core`.
 
-## React Compiler
+> Nota: Este repositorio está marcado como privado en `package.json`. Si deseas publicar una licencia, añade un archivo `LICENSE` en la raíz.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🚀 Demo / Capturas
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+![Landing](/public/img/landingpage.png)
+
+---
+
+## 🧰 Requisitos
+
+- Node.js 18+ (recomendado)
+- npm (o pnpm/yarn según prefieras)
+
+## ⚙️ Instalación y desarrollo
+
+1. Instala dependencias:
+
+```bash
+npm install
+```
+
+2. Ejecuta el servidor de desarrollo:
+
+```bash
+npm run dev
+```
+
+Abre `http://localhost:5173` en tu navegador.
+
+3. Generar build de producción:
+
+```bash
+npm run build
+```
+
+4. Probar build (preview):
+
+```bash
+npm run preview
+```
+
+5. Linting:
+
+```bash
+npm run lint
+```
+
+---
+
+## 🎮 Cómo jugar (resumen rápido)
+
+1. En la pantalla de configuración (`Player Setup`) añade los nombres de los jugadores.
+2. Selecciona la cantidad de barajas (cada baraja = 54 cartas).
+3. Pulsa **Iniciar partida**. Se muestra el mazo (placeholder) y al sacar se anima la carta real.
+4. La aplicación aplica la regla correspondiente a la carta sacada (según `src/core/Rules.js`).
+
+---
+
+## 🧩 Estructura del proyecto
+
+- `src/`
+  - `components/` — componentes React (LandingPage, PlayerSetup, GameBoard, Card, ...)
+  - `core/` — lógica del juego (Dealer, DeckFactory, Rules)
+  - `styles/` — CSS modular
+  - `main.jsx`, `App.jsx`
+- `public/img/` — imágenes del juego (placeholders de cartas, landing page)
+- `package.json` — scripts y dependencias
+
+---
+
+## Contribuir 🛠️
+
+Si quieres colaborar:
+
+1. Haz fork del repositorio y crea una rama feature: `git checkout -b feature/nombre-feature`.
+2. Asegúrate de que los cambios pasen el linter (`npm run lint`).
+3. Abre un pull request contra `main` o `develop` (según flujo que usemos).
+
+Para cambios grandes, abre un issue primero para discutir el diseño.
+
+---
+
+## ✅ Buenas prácticas y TODOs
+
+- Añadir tests unitarios para `DeckFactory`, `Dealer` y `Rules`.
+- Añadir workflows de CI en `.github/workflows` (por ejemplo, ejecutar `npm ci` y `npm run build`).
+- Añadir un `LICENSE` si decides publicar el proyecto públicamente.
+
+---
+
+## 📬 Contacto
+
+Si tienes preguntas o sugerencias, abre un issue o contacta al owner: **Rudepro** (GitHub).
+
+---
+
+Gracias por contribuir y divertirte con el proyecto. ¡Salud! 🥂
