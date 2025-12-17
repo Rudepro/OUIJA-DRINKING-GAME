@@ -1,0 +1,20 @@
+/* src/styles/vars.css */
+
+:root {
+    /* Paleta de Colores (Inspirado en Dark Mode Moderno) */
+    --color-primary: #ff5722; /* Naranja/Rojo Vivo (Acción) */
+    --color-secondary: #00bcd4; /* Cian (Información/Seguridad) */
+    --color-background: #121212; /* Fondo Oscuro Profundo */
+    --color-surface: #1e1e1e; /* Superficies/Tarjetas */
+    --color-text-light: #ffffff;
+    --color-text-muted: #aaaaaa;
+
+    /* Colores de Cartas */
+    --card-red: #e74c3c;
+    --card-black: #333333;
+    
+    /* Sombras y Transiciones */
+    --shadow-deep: 0 8px 16px rgba(0, 0, 0, 0.5);
+    --shadow-lift: 0 4px 8px rgba(0, 0, 0, 0.3);
+    --transition-fast: all 0.2s ease-in-out;
+}
