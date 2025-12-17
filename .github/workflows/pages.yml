@@ -23,13 +23,19 @@ jobs:
 
       - name: Build
         run: |
+          echo "PWD: $(pwd)"
+          echo "Repo contents:"
+          ls -la || true
           echo "node: $(node -v)"
           echo "npm: $(npm -v)"
-          npm run build
+          set -o pipefail
+          npm run build 2>&1 | tee build.log
 
-      - name: Debug dist
+      - name: Debug build and dist
         if: always()
         run: |
+          echo "--- build.log (first 400 lines) ---"
+          sed -n '1,400p' build.log || true
           echo "--- dist contents ---"
           ls -la dist || true
           echo "--- index.html preview ---"
