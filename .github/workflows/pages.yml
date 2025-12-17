@@ -24,6 +24,13 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Debug dist
+        run: |
+          echo "--- dist contents ---"
+          ls -la dist || true
+          echo "--- index.html preview ---"
+          sed -n '1,120p' dist/index.html || true
+
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
