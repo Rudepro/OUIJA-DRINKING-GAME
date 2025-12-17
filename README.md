@@ -100,6 +100,24 @@ Para cambios grandes, abre un issue primero para discutir el diseño.
 
 ---
 
+## 📦 Despliegue (GitHub Pages)
+
+Este repositorio incluye un workflow que construye y despliega automáticamente a la rama `gh-pages` cuando se hace push a `develop`.
+
+Pasos y notas:
+
+1. La configuración de Vite tiene `base: '/ouija-drinking-game/'`, lo que asegura que los assets se resuelvan correctamente en la URL del sitio de proyecto: `https://rudepro.github.io/ouija-drinking-game/`.
+
+2. El workflow se ejecuta en pushes a `develop` y publica la carpeta `dist/` en la rama `gh-pages`.
+
+3. En la configuración del repositorio (Settings → Pages), selecciona la rama `gh-pages` y la carpeta `/ (root)` como origen del sitio.
+
+4. Tras la primera ejecución del workflow, el sitio estará disponible en `https://rudepro.github.io/ouija-drinking-game/`.
+
+Si prefieres desplegar en otra rama o usar otra estrategia (por ejemplo `docs/` en `main`), puedo ajustarlo.
+
+---
+
 ## 📬 Contacto
 
 Si tienes preguntas o sugerencias, abre un issue o contacta al owner: **Rudepro** (GitHub).
