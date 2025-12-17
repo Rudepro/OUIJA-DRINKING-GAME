@@ -22,9 +22,13 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build
+        run: |
+          echo "node: $(node -v)"
+          echo "npm: $(npm -v)"
+          npm run build
 
       - name: Debug dist
+        if: always()
         run: |
           echo "--- dist contents ---"
           ls -la dist || true
@@ -32,6 +36,7 @@ jobs:
           sed -n '1,120p' dist/index.html || true
 
       - name: Deploy to develop/docs (commit built files)
+        if: always()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
