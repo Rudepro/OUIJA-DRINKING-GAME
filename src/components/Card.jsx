@@ -32,9 +32,10 @@ const Card = ({ card }) => {
     if (!card) return null;
 
     const imageName = getCardImageName(card);
-    const pngPath = `/img/${imageName}.png`;
-    const svgPath = `/img/${imageName}.svg`;
-    const fallback = '/img/placeholder.png';
+    const base = import.meta.env.BASE_URL || '/';
+    const pngPath = `${base}img/${imageName}.png`;
+    const svgPath = `${base}img/${imageName}.svg`;
+    const fallback = `${base}img/placeholder.png`;
     // Preferir SVG primero (opción elegida)
     const [src, setSrc] = useState(svgPath);
 
