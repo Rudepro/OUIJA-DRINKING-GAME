@@ -1,10 +1,8 @@
-// src/components/PlayerSetup.jsx
 import React, { useState, useEffect } from 'react';
 
 const MIN_PLAYERS = 2;
 const MAX_DECKS = 4;
 
-// Límite de jugadores por baraja
 const MAX_PLAYERS_PER_DECK = {
     1: 8,  
     2: 12,
@@ -13,7 +11,6 @@ const MAX_PLAYERS_PER_DECK = {
 };
 
 const PlayerSetup = ({ onStartGame, onBack, initialPlayers = [], initialNumDecks = 1 }) => {
-    // Inicializamos con valores posibles desde props (si venimos de juego)
     const [playerNames, setPlayerNames] = useState(() => {
         if (initialPlayers && initialPlayers.length > 0) return initialPlayers;
         return ['Jugador 1', 'Jugador 2'];
@@ -21,11 +18,8 @@ const PlayerSetup = ({ onStartGame, onBack, initialPlayers = [], initialNumDecks
 
     const [numDecks, setNumDecks] = useState(initialNumDecks);
 
-    // Calcular el máximo de jugadores permitido basado en las barajas
     const maxPlayersAllowed = MAX_PLAYERS_PER_DECK[numDecks] || 8;
 
-    // Ajustar la lista de jugadores si el usuario reduce el número de barajas
-    // Usamos useEffect ya que realizamos un side-effect (actualizar estado)
     useEffect(() => {
         if (playerNames.length > maxPlayersAllowed) {
             setPlayerNames(playerNames.slice(0, maxPlayersAllowed));
@@ -84,7 +78,6 @@ const PlayerSetup = ({ onStartGame, onBack, initialPlayers = [], initialNumDecks
             
             <form onSubmit={handleSubmit}>
                 
-                {/* Cantidad de Barajas */}
                 <div className="form-group">
                     <label htmlFor="decks">⚙️ Cantidad de Barajas:</label>
                     <select 
@@ -100,7 +93,6 @@ const PlayerSetup = ({ onStartGame, onBack, initialPlayers = [], initialNumDecks
                     </select>
                 </div>
 
-                {/* Lista de Jugadores */}
                 <div className="players-list">
                     <h3>👥 Jugadores ({playerNames.length}/{maxPlayersAllowed})</h3>
                     {playerNames.map((name, index) => (
@@ -113,7 +105,6 @@ const PlayerSetup = ({ onStartGame, onBack, initialPlayers = [], initialNumDecks
                                 required
                             />
 
-                            {/* Botón para eliminar jugador individual */}
                             <button
                                 type="button"
                                 className="icon-btn remove"
@@ -131,7 +122,6 @@ const PlayerSetup = ({ onStartGame, onBack, initialPlayers = [], initialNumDecks
                     ))}
                 </div>
 
-                {/* Botones para Añadir/Quitar jugadores */}
                 <div className="action-buttons">
                     <button 
                         type="button" 
@@ -162,7 +152,6 @@ const PlayerSetup = ({ onStartGame, onBack, initialPlayers = [], initialNumDecks
                     </button>
                 </div>
 
-                {/* Botón de Inicio y de Regreso */}
                 <div className="footer" style={{ marginTop: '20px' }}>
                     <button type="submit" className="btn-primary">
                         ¡Iniciar la Ouija Drink!

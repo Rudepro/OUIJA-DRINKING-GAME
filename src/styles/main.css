@@ -1,10 +1,6 @@
-/* src/styles/main.css */
+@import url('./vars.css');
+@import url('./game.css');
 
-/* 1. Importación de Estilos Esenciales */
-@import url('./vars.css'); /* Variables de color */
-@import url('./game.css'); /* Estilos específicos del GameBoard y cartas */
-
-/* --- 2. Base & Reset --- */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -17,7 +13,7 @@ body {
     background-color: var(--color-background); 
     color: var(--color-text-light); 
     line-height: 1.6;
-    overflow: hidden; /* Importante para apps móviles */
+    overflow: hidden;
     position: fixed;
     width: 100%;
     height: 100%;
@@ -28,11 +24,10 @@ body {
     justify-content: center;
     height: 100vh;
     width: 100vw;
-    overflow-y: auto; /* Permitir scroll solo si el contenido excede la pantalla */
+    overflow-y: auto;
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
-/* --- 3. Contenedor Principal (Mobile First) --- */
 .landing-page, .setup-page, .game-board-container {
     max-width: 500px;
     width: 100%;
@@ -44,7 +39,6 @@ body {
     min-height: 100%;
 }
 
-/* --- 4. Encabezados y Tipografía --- */
 .header h1 {
     font-size: 2.2em;
     color: var(--color-primary); 
@@ -61,7 +55,6 @@ body {
     margin-bottom: 10px;
 }
 
-/* Ajustes para la Landing Page móvil */
 .landing-page::before {
     content: '';
     position: fixed;
@@ -86,7 +79,6 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Botones más grandes para dedos */
 .btn-primary {
     min-height: 60px;
     font-size: 1.2em;
@@ -102,7 +94,6 @@ body {
     height: 48px;
 }
 
-/* Media query para tablets o pantallas más anchas */
 @media (min-width: 600px) {
     #root {
         padding: 40px 20px;

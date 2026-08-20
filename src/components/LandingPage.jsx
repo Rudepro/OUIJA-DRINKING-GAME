@@ -1,7 +1,5 @@
-// src/components/LandingPage.jsx
 import React from 'react';
 
-// Se utiliza React.memo para optimizar, ya que esta página no cambia a menudo
 const LandingPage = React.memo(({ onStartSetup }) => {
 
   return (

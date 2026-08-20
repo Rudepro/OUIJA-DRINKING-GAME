@@ -1,10 +1,8 @@
-// src/components/GameBoard.jsx (VERSIÓN FUNCIONAL)
 import React, { useState, useCallback } from 'react';
 import { drawCard } from '../core/Dealer';
 import { getCardRule, ACTIONS } from '../core/Rules';
-import Card from './Card'; // Lo crearemos en breve
+import Card from './Card';
 
-// Iconos para la interfaz
 const ICONS = {
     DERECHA: '👉',
     IZQUIERDA: '👈',
@@ -15,44 +13,35 @@ const ICONS = {
 };
 
 const GameBoard = ({ initialDeck, players, onGameOver, onBackToSetup }) => {
-    // Estado del juego
     const [deck, setDeck] = useState(initialDeck);
     const [currentTurnIndex, setCurrentTurnIndex] = useState(0);
     const [lastDrawnCard, setLastDrawnCard] = useState(null);
     const [actionMessage, setActionMessage] = useState('Pulsa el mazo para empezar.');
-    const [targetPlayer, setTargetPlayer] = useState(null); // El jugador afectado por la regla
+    const [targetPlayer, setTargetPlayer] = useState(null);
 
-    // Estados para animación de extracción
     const [isAnimating, setIsAnimating] = useState(false);
     const [animatedSrc, setAnimatedSrc] = useState('/img/placeholder.png');
     const [animatedCard, setAnimatedCard] = useState(null);
-    const animationDuration = 900; // ms (ajustable)
+    const animationDuration = 900;
 
     const currentPlayer = players[currentTurnIndex];
     const cardsRemaining = deck.length;
 
-    /**
-     * Calcula quién es el jugador afectado (derecha o izquierda)
-     */
     const calculateTarget = useCallback((actionType) => {
         const numPlayers = players.length;
         let targetIndex;
 
         if (actionType === ACTIONS.DERECHA) {
-            // (índice actual + 1) Módulo numPlayers. Si es el último, vuelve al 0
-            targetIndex = (currentTurnIndex + 1) % numPlayers; 
+            targetIndex = (currentTurnIndex + 1) % numPlayers;
         } else if (actionType === ACTIONS.IZQUIERDA) {
-            // (índice actual - 1 + numPlayers) Módulo numPlayers. Si es el primero (0), va al último.
-            targetIndex = (currentTurnIndex - 1 + numPlayers) % numPlayers; 
+            targetIndex = (currentTurnIndex - 1 + numPlayers) % numPlayers;
         } else {
-            // Si es TOMAR, PONER o SALVADO, el objetivo es el jugador actual
             return currentPlayer;
         }
 
         return players[targetIndex];
     }, [currentTurnIndex, players, currentPlayer]);
 
-    // Helper para obtener nombre de imagen de la carta (similar a Card.jsx)
     const getImageName = (card) => {
         if (!card) return '';
         if (card.id) return card.id;
@@ -69,9 +58,6 @@ const GameBoard = ({ initialDeck, players, onGameOver, onBackToSetup }) => {
         return `${value}${suit}`;
     };
 
-    /**
-     * Lógica principal: Extraer una carta y aplicar la regla.
-     */
     const handleDrawCard = () => {
         if (cardsRemaining === 0 || isAnimating) {
             if (cardsRemaining === 0) {
@@ -82,11 +68,9 @@ const GameBoard = ({ initialDeck, players, onGameOver, onBackToSetup }) => {
             return;
         }
 
-        // 1. Sacar la carta (eliminación lógica inmediata para evitar repeticiones)
         const { card, remainingDeck } = drawCard(deck);
         setDeck(remainingDeck);
 
-        // 2. Preparar animación
         const imageName = getImageName(card);
         const svgPath = `/img/${imageName}.svg`;
         const backPath = '/img/placeholder.png';
@@ -96,12 +80,10 @@ const GameBoard = ({ initialDeck, players, onGameOver, onBackToSetup }) => {
         setIsAnimating(true);
         setActionMessage('Sacando carta...');
 
-        // 3. A mitad de animación, revelar la carta (cambiar la imagen)
         setTimeout(() => {
             setAnimatedSrc(svgPath);
         }, animationDuration / 2);
 
-        // 4. Al final de la animación, fijar la carta y aplicar reglas
         setTimeout(() => {
             setIsAnimating(false);
             setLastDrawnCard(card);
@@ -123,14 +105,12 @@ const GameBoard = ({ initialDeck, players, onGameOver, onBackToSetup }) => {
 
             setActionMessage(message);
 
-            // Pasar al siguiente turno (solo si quedan cartas)
             if (remainingDeck.length > 0) {
                 setCurrentTurnIndex((prevIndex) => (prevIndex + 1) % players.length);
             }
         }, animationDuration + 40);
     };
 
-    // Determina el color de fondo del mensaje
     const getActionClass = () => {
         if (!lastDrawnCard) return 'msg-initial';
         const ruleType = getCardRule(lastDrawnCard).type;
@@ -151,20 +131,16 @@ const GameBoard = ({ initialDeck, players, onGameOver, onBackToSetup }) => {
                 <p>Cartas restantes: {cardsRemaining}</p>
             </header>
 
-            {/* Zona de Mensaje y Acción */}
             <div className={`action-message ${getActionClass()}`}>
                 <p>{actionMessage}</p>
             </div>
 
-            {/* Visualización de la Última Carta */}
             <div className="card-display">
-                {/* Si está en animación, mostramos el elemento animado que simula sacar y voltear la carta */}
                 {isAnimating ? (
                     <div className="card-animator">
                         <img src={animatedSrc} alt="Carta en animación" className="card-image animating-draw" />
                     </div>
                 ) : (
-                    // Si hay carta ya sacada, mostrarla, si no, placeholder
                     lastDrawnCard ? (
                         <Card card={lastDrawnCard} />
                     ) : (
@@ -179,7 +155,6 @@ const GameBoard = ({ initialDeck, players, onGameOver, onBackToSetup }) => {
                 )}
             </div>
 
-            {/* Mazo (Botón de Acción) */}
             <button 
                 className="deck-button btn-primary"
                 onClick={handleDrawCard}
@@ -188,7 +163,6 @@ const GameBoard = ({ initialDeck, players, onGameOver, onBackToSetup }) => {
                 {cardsRemaining > 0 ? `Sacar Carta (${cardsRemaining})` : `Juego Terminado ${ICONS.FIN}`}
             </button>
             
-            {/* Controles de Jugadores y Fin */}
             <footer className="game-footer">
                 <div className="player-list-summary">
                     Jugadores: {players.map(p => 

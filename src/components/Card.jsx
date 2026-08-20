@@ -1,11 +1,8 @@
-// src/components/Card.jsx
 import React, { useState } from 'react';
 
-// Función para mapear objeto de carta a nombre de archivo
 const getCardImageName = (card) => {
     if (!card) return '';
 
-    // Si el deck ya provee un id (ej. 'AC', '7C', 'JR') usarlo directamente
     if (card.id) return String(card.id).toUpperCase();
 
     if (card.isJoker) {
@@ -13,9 +10,8 @@ const getCardImageName = (card) => {
     }
 
     let valueMap = card.value;
-    if (card.value === '10') valueMap = 'T'; // La mayoría de sets usan 'T' para 10
+    if (card.value === '10') valueMap = 'T';
 
-    // Permitir tanto nombres completos ('hearts') como letras ('H')
     let suitMap = '';
     if (typeof card.suit === 'string') {
         const s = card.suit.toLowerCase();
@@ -35,10 +31,8 @@ const Card = ({ card }) => {
     const pngPath = `/img/${imageName}.png`;
     const svgPath = `/img/${imageName}.svg`;
     const fallback = '/img/placeholder.png';
-    // Preferir SVG primero (opción elegida)
     const [src, setSrc] = useState(svgPath);
 
-    // Texto alternativo en español para accesibilidad
     const suitNames = { H: 'corazones', D: 'diamantes', C: 'tréboles', S: 'espadas' };
     let altText = '';
     if (card.isJoker) {
@@ -56,7 +50,6 @@ const Card = ({ card }) => {
                 alt={altText}
                 className="card-image"
                 onError={(e) => {
-                    // Si falla .svg, intentar .png; si falla .png usar placeholder
                     if (src.endsWith('.svg')) {
                         setSrc(pngPath);
                         e.target.onerror = null;
