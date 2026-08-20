@@ -1,10 +1,24 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/img/landingpage.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="./img/landingpage.png" />
+    <!-- Optimizamos el viewport para aplicaciones móviles (evita zoom accidental y asegura responsividad) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>🍻 OUIJA DRINK</title>
+    <!-- Prevenir que el usuario pueda seleccionar texto (común en apps móviles) -->
+    <style>
+      body {
+        -webkit-user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        overflow: hidden; /* Evita scroll elástico innecesario en el body */
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        width: 100vw;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>

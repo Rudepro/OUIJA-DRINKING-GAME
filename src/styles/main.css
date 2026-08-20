@@ -9,6 +9,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -16,294 +17,101 @@ body {
     background-color: var(--color-background); 
     color: var(--color-text-light); 
     line-height: 1.6;
-    overflow-x: hidden; /* Evita desplazamiento horizontal en móviles */
+    overflow: hidden; /* Importante para apps móviles */
+    position: fixed;
+    width: 100%;
+    height: 100%;
 }
 
 #root {
     display: flex;
     justify-content: center;
-    min-height: 100vh;
-    padding: 20px 10px;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
+    overflow-y: auto; /* Permitir scroll solo si el contenido excede la pantalla */
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 /* --- 3. Contenedor Principal (Mobile First) --- */
 .landing-page, .setup-page, .game-board-container {
-    max-width: 450px; /* Ancho cómodo para móviles */
+    max-width: 500px;
     width: 100%;
     padding: 20px;
     background-color: var(--color-surface); 
-    border-radius: 12px;
-    box-shadow: var(--shadow-deep);
     display: flex;
     flex-direction: column;
     gap: 20px;
+    min-height: 100%;
 }
 
 /* --- 4. Encabezados y Tipografía --- */
 .header h1 {
-    font-size: 2.4em;
+    font-size: 2.2em;
     color: var(--color-primary); 
     margin-bottom: 5px;
-    text-shadow: 0 0 5px rgba(255, 87, 34, 0.5); /* Sombra sutil */
+    text-shadow: 0 0 10px rgba(255, 87, 34, 0.3);
     text-align: center;
 }
 
 .header h2 {
-    font-size: 1.1em;
+    font-size: 1em;
     font-style: italic;
     color: var(--color-text-muted);
     text-align: center;
     margin-bottom: 10px;
 }
 
-h3 {
-    color: var(--color-primary);
-    font-size: 1.3em;
-    border-bottom: 2px solid var(--color-surface);
-    padding-bottom: 5px;
-    margin-bottom: 15px;
-}
-
-/* --- Hero y Fondo de la Landing Page (ahora fullscreen) --- */
-/* Fondo cubre toda la página mediante pseudo-elemento fijo */
+/* Ajustes para la Landing Page móvil */
 .landing-page::before {
     content: '';
     position: fixed;
-    inset: 0; /* top:0; right:0; bottom:0; left:0 */
+    inset: 0;
     background-image: url('/img/landingpage.png');
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
-    z-index: -2;
-    filter: brightness(0.35) saturate(0.95);
-    pointer-events: none;
+    z-index: -1;
+    filter: brightness(0.3);
 }
 
-/* Hacemos que el contenedor principal de landing sea transparente para mostrar el fondo */
 .landing-page {
     background-color: transparent;
-    box-shadow: none;
+    justify-content: center;
 }
 
-.header.landing-hero {
-    /* Ya no contiene la imagen (esta se aplica al fondo completo). */
-    min-height: 220px;
-    border-radius: 8px;
+.landing-hero-overlay {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    padding: 30px 20px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Botones más grandes para dedos */
+.btn-primary {
+    min-height: 60px;
+    font-size: 1.2em;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
-    overflow: hidden;
-    background: transparent;
-}
-
-.header.landing-hero .landing-hero-overlay {
-    background: rgba(0, 0, 0, 0.45);
-    padding: 24px;
-    border-radius: 8px;
-    text-align: center;
-    color: #ffffff;
-    max-width: 620px;
-    /* Animación de entrada */
-    animation: hero-enter 700ms cubic-bezier(.22,.9,.32,1) both;
-}
-
-.header.landing-hero .landing-hero-overlay h1,
-.header.landing-hero .landing-hero-overlay h2,
-.header.landing-hero .landing-hero-overlay .hero-cta {
-    opacity: 0;
-    transform: translateY(8px);
-    animation: content-fade-up 600ms ease-out both;
-}
-
-.header.landing-hero .landing-hero-overlay h1 { animation-delay: 120ms; }
-.header.landing-hero .landing-hero-overlay h2 { animation-delay: 240ms; }
-.header.landing-hero .landing-hero-overlay .hero-cta { animation-delay: 360ms; }
-
-.header.landing-hero .hero-cta {
-    margin-top: 10px;
-    font-size: 1em;
-    color: #e9f7fb;
-    opacity: 0.95;
-}
-
-/* Keyframes */
-@keyframes hero-enter {
-    from { transform: scale(0.98); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-
-@keyframes content-fade-up {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Respect user preference for reduced motion */
-@media (prefers-reduced-motion: reduce) {
-    .header.landing-hero .landing-hero-overlay,
-    .header.landing-hero .landing-hero-overlay h1,
-    .header.landing-hero .landing-hero-overlay h2,
-    .header.landing-hero .landing-hero-overlay .hero-cta {
-        animation: none !important;
-        transition: none !important;
-    }
-}
-
-/* En pantallas más grandes, permitir que la landing ocupe más ancho */
-@media (min-width: 900px) {
-    .landing-page {
-        max-width: 900px;
-    }
-}
-
-/* --- 5. Secciones (Landing Page & Setup) --- */
-.purpose, .rules-summary {
-    background-color: #242424; /* Un tono más oscuro que la superficie */
-    padding: 15px;
-    border-radius: 8px;
-    border-left: 4px solid var(--color-primary);
-}
-
-.rules-summary ul {
-    list-style-type: none;
-    padding: 0;
-    margin-top: 10px;
-}
-
-.rules-summary li {
-    padding: 5px 0;
-    border-bottom: 1px dashed #333;
-    display: flex;
-    gap: 10px;
-}
-
-/* --- 6. Formulario y Controles (PlayerSetup) --- */
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: var(--color-text-light);
-}
-
-.form-group input, .form-group select {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #333;
-    background-color: #333;
-    color: var(--color-text-light);
-    font-size: 1em;
-    transition: var(--transition-fast);
-}
-
-.form-group input:focus, .form-group select:focus {
-    border-color: var(--color-primary);
-    box-shadow: 0 0 5px rgba(255, 87, 34, 0.5);
-    outline: none;
-}
-
-/* --- Icon buttons para añadir/quitar jugadores --- */
-.player-input {
-    display: flex;
-    gap: 8px;
-    align-items: center;
+    box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);
 }
 
 .icon-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 8px;
-    border: 1px solid #444;
-    background: transparent;
-    color: var(--color-text-light);
-    cursor: pointer;
-    transition: var(--transition-fast);
+    width: 48px;
+    height: 48px;
 }
 
-.icon-btn:hover:not(:disabled) {
-    background: rgba(255,255,255,0.04);
-    transform: translateY(-2px);
-}
-
-.icon-btn.add {
-    background: linear-gradient(90deg, rgba(0,160,170,0.15), rgba(0,160,170,0.06));
-    border-color: rgba(0,160,170,0.45);
-}
-
-.icon-btn.remove {
-    background: linear-gradient(90deg, rgba(200,40,40,0.06), rgba(200,40,40,0.02));
-    border-color: rgba(200,40,40,0.25);
-}
-
-.icon-btn:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-}
-
-/* --- 7. Botones Globales --- */
-.footer {
-    padding-top: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.btn-primary {
-    width: 100%;
-    padding: 15px;
-    background-color: var(--color-primary);
-    color: var(--color-background);
-    border: none;
-    border-radius: 8px;
-    font-size: 1.1em;
-    font-weight: bold;
-    cursor: pointer;
-    transition: var(--transition-fast);
-    text-transform: uppercase;
-}
-
-.btn-primary:hover:not(:disabled) {
-    background-color: #ff7043; 
-    transform: translateY(-2px); 
-    box-shadow: var(--shadow-lift);
-}
-
-.btn-secondary {
-    width: 100%;
-    padding: 12px;
-    background-color: transparent;
-    color: var(--color-text-muted);
-    border: 1px solid #444;
-    border-radius: 8px;
-    font-size: 0.9em;
-    cursor: pointer;
-    transition: var(--transition-fast);
-}
-
-.btn-secondary:hover:not(:disabled) {
-    background-color: #333;
-    color: var(--color-text-light);
-}
-
-.btn-secondary:disabled, .btn-primary:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.action-buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: space-between;
-}
-
-.action-buttons button {
-    flex-grow: 1;
+/* Media query para tablets o pantallas más anchas */
+@media (min-width: 600px) {
+    #root {
+        padding: 40px 20px;
+    }
+    .landing-page, .setup-page, .game-board-container {
+        border-radius: 20px;
+        min-height: auto;
+        height: fit-content;
+        align-self: center;
+        box-shadow: var(--shadow-deep);
+    }
 }
