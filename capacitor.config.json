@@ -1,0 +1,6 @@
+{
+  "appId": "com.ouija.drinkinggame",
+  "appName": "Ouija Drink",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
