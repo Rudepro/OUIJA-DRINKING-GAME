@@ -1,0 +1,61 @@
+name: Build and deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: |
+          echo "PWD: $(pwd)"
+          echo "Repo contents:"
+          ls -la || true
+          echo "node: $(node -v)"
+          echo "npm: $(npm -v)"
+          set -o pipefail
+          npm run build 2>&1 | tee build.log
+
+      - name: Debug build and dist
+        if: always()
+        run: |
+          echo "--- build.log (first 400 lines) ---"
+          sed -n '1,400p' build.log || true
+          echo "--- dist contents ---"
+          ls -la dist || true
+          echo "--- index.html preview ---"
+          sed -n '1,120p' dist/index.html || true
+
+      - name: Deploy to develop/docs (commit built files)
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Deploying dist -> docs/ on develop"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -rf docs || true
+          mkdir -p docs
+          cp -r dist/* docs/
+          git add docs
+          if git diff --quiet --cached; then
+            echo "No changes to deploy"
+          else
+            git commit -m "chore(pages): update docs from build [skip ci]"
+            git push origin HEAD:develop
+          fi
