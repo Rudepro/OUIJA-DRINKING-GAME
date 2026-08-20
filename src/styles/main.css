@@ -263,7 +263,7 @@ select option {
     content: '';
     position: fixed;
     inset: 0;
-    background-image: url('/img/landingpage.png');
+    background-image: url('/OUIJA-DRINKING-GAME/img/landingpage.png');
     background-size: cover;
     background-position: center;
     z-index: -1;

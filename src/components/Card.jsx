@@ -28,9 +28,10 @@ const Card = ({ card }) => {
     if (!card) return null;
 
     const imageName = getCardImageName(card);
-    const pngPath = `/img/${imageName}.png`;
-    const svgPath = `/img/${imageName}.svg`;
-    const fallback = '/img/placeholder.png';
+    const basePath = import.meta.env.BASE_URL;
+    const pngPath = `${basePath}img/${imageName}.png`;
+    const svgPath = `${basePath}img/${imageName}.svg`;
+    const fallback = `${basePath}img/placeholder.png`;
     const [src, setSrc] = useState(svgPath);
 
     const suitNames = { H: 'corazones', D: 'diamantes', C: 'tréboles', S: 'espadas' };

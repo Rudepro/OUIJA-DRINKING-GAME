@@ -20,7 +20,8 @@ const GameBoard = ({ initialDeck, players, onGameOver, onBackToSetup }) => {
     const [targetPlayer, setTargetPlayer] = useState(null);
 
     const [isAnimating, setIsAnimating] = useState(false);
-    const [animatedSrc, setAnimatedSrc] = useState('/img/placeholder.png');
+    const basePath = import.meta.env.BASE_URL;
+    const [animatedSrc, setAnimatedSrc] = useState(`${basePath}img/placeholder.png`);
     const [animatedCard, setAnimatedCard] = useState(null);
     const animationDuration = 900;
 
@@ -72,8 +73,8 @@ const GameBoard = ({ initialDeck, players, onGameOver, onBackToSetup }) => {
         setDeck(remainingDeck);
 
         const imageName = getImageName(card);
-        const svgPath = `/img/${imageName}.svg`;
-        const backPath = '/img/placeholder.png';
+        const svgPath = `${basePath}img/${imageName}.svg`;
+        const backPath = `${basePath}img/placeholder.png`;
 
         setAnimatedCard(card);
         setAnimatedSrc(backPath);
@@ -146,7 +147,7 @@ const GameBoard = ({ initialDeck, players, onGameOver, onBackToSetup }) => {
                     ) : (
                         <div className="card-placeholder">
                             {cardsRemaining > 0 ? (
-                                <img src="/img/placeholder.png" alt="Mazo en espera" className="card-image placeholder" />
+                                <img src={`${basePath}img/placeholder.png`} alt="Mazo en espera" className="card-image placeholder" />
                             ) : (
                                 <div className="card-empty">Mazo vacío</div>
                             )}
